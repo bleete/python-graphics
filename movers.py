@@ -45,6 +45,7 @@ PURPLE = (255, 0, 255)
 TURQUOISE = (0, 255, 255)
 WHITE = (255, 255, 255)
 GREY = (192, 192, 192)
+DARKGREY = (128, 128, 128)
 
 # Player can be any color except color of background, flame, sun,
 # or black (until they explode, when they stay black)

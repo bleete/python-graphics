@@ -9,10 +9,10 @@ from movers import *
 WINDOW_WIDTH = 1200
 WINDOW_HEIGHT = 900
 # Sun parameters
-SUN_RADIUS = 30
-SUN_POS = (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2)
-GRAVITY_CONSTANT = 30.0
-TOO_CLOSE = SUN_RADIUS * 2
+SUN_RADIUS = [30, 10]
+SUN_POS = [(WINDOW_WIDTH // 4, WINDOW_HEIGHT // 2), (3 * WINDOW_WIDTH // 4, WINDOW_HEIGHT // 2)]
+GRAVITY_CONSTANT = [30.0, 10.0]
+TOO_CLOSE = [60, 15]
 
 
 
@@ -60,22 +60,24 @@ while True:
     motion = offsetRotate(motion, (0, thrust), direction)
 
     # Add effect of gravity
-    gravityScale = GRAVITY_CONSTANT / ((pos[0] - SUN_POS[0]) ** 2 + (pos[1] - SUN_POS[1]) ** 2)
-    gravityForce = ((SUN_POS[0] - pos[0]) * gravityScale, (SUN_POS[1] - pos[1]) * gravityScale)
-    motion = (motion[0] + gravityForce[0], motion[1] + gravityForce[1])
+    for i in range(len(SUN_RADIUS)):
+        gravityScale = GRAVITY_CONSTANT / ((pos[0] - SUN_POS[i][0]) ** 2 + (pos[1] - SUN_POS[i][1]) ** 2)
+        gravityForce = ((SUN_POS[i][0] - pos[0]) * gravityScale, (SUN_POS[i][1] - pos[1]) * gravityScale)
+        motion = (motion[0] + gravityForce[0], motion[1] + gravityForce[1])
 
     # Increment position; wrap around as needed
     pos = ((pos[0] + motion[0]) % WINDOW_WIDTH, (pos[1] + motion[1]) % WINDOW_HEIGHT)
 
     # Determine distance from sun for later comparison to TOO_CLOSE, to set exploded flag
-    distanceFromSun = math.sqrt((pos[0]-SUN_POS[0]) ** 2 + (pos[1]-SUN_POS[1]) ** 2)
+#    distanceFromSun = math.sqrt((pos[0]-SUN_POS[0]) ** 2 + (pos[1]-SUN_POS[1]) ** 2)
 
     # Draw
 
     # Background
     surface.fill(DARKGREY)
     # Sun
-    pygame.draw.circle(surface, YELLOW, (SUN_POS), SUN_RADIUS)
+    for i in range(len(SUN_POS)):
+        pygame.draw.circle(surface, YELLOW, (SUN_POS[i]), SUN_RADIUS)
     # Player's ship
 
     pygame.display.update()
